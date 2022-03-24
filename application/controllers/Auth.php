@@ -112,6 +112,17 @@ class Auth extends CI_Controller {
 
 			if($user){
 				if($user['password'] == $password){
+					
+
+					$newdata = array(
+						'id_user'     => $user['id'],
+						'email'     => $email,
+						'role'     => $user['role'],
+						'logged_in' => TRUE
+					);
+				
+					$this->session->set_userdata($newdata);
+
 					redirect('welcome');
 				}else{
 					redirect('auth/login');
@@ -122,4 +133,11 @@ class Auth extends CI_Controller {
 		}
 		
 	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect('auth/login');
+	}
+
 }

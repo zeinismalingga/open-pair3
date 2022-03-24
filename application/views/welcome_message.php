@@ -79,8 +79,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 
 <div id="container">
-	<a href="<?php echo base_url('index.php/product/create') ?>">Create Product</a>
+	<?php echo 'Welcome '. $this->session->userdata('email') ?>
 	<br>
+
+	<?php if($this->session->userdata('role') == '1'): ?>
+	<a href="<?php echo base_url('index.php/product/create') ?>">Create Product</a>
+	<?php endif ?>
+
+	<?php if($this->session->userdata('role') == '0'): ?>
+	<a href="<?php echo base_url('index.php/product_user/create') ?>">Create Product User</a>
+	<?php endif ?>
+	<br>
+
+
+	<a href="<?php echo base_url('index.php/auth/logout') ?>">Logout</a>
 	
 </div>
 
