@@ -20,6 +20,34 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		// 6.1
+		$data['active_user'] = $this->db->query("SELECT COUNT(*) as total FROM users WHERE active = '1'")->result_array();
+
+		// 6.2
+		$data['active_user_attached'] = $this->db->query("SELECT COUNT(*) as total FROM users, product, product_user WHERE users.active = '1' AND users.id = product_user.id_user AND product.id = product_user.id_product")->result_array();
+
+		// 6.3
+		$data['active_product'] = $this->db->query("SELECT COUNT(*) as total FROM product WHERE status = '1'")->result_array();
+
+		// 6.4
+		$data['active_product_dont_belong'] = $this->db->query("SELECT COUNT(*) as total FROM product, product_user WHERE product.status = '1' AND product.id != product_user.id_product")->result_array();
+
+		// 6.5
+		$data['active_attached_products'] = $this->db->query("SELECT SUM(product_user.qty) as total FROM product, product_user, users WHERE product.status = '1' AND product.id = product_user.id_product AND product_user.id_user = users.id")->result_array();
+
+		// 6.6
+		$data['price_active_attached_products'] = $this->db->query("SELECT SUM(product_user.price * product_user.qty) as total FROM product, product_user, users WHERE product.status = '1' AND product.id = product_user.id_product AND product_user.id_user = users.id")->result_array();
+
+		// 6.7
+		$data['price_active_attached_products_peruser'] = $this->db->query("SELECT SUM(product_user.qty * product_user.price) as total, users.email FROM product, product_user, users WHERE product.status = '1' AND product.id = product_user.id_product AND product_user.id_user = users.id GROUP BY users.id")->result_array();
+
+		// 6.8
+		$json = file_get_contents('http://api.exchangeratesapi.io/v1/latest?access_key=3528e8a76aa4cfbd71e4d52c4e4ba43e');
+
+		$data['exchange'] = json_decode($json, 1);
+
+		// print_r($result);
+
+		$this->load->view('welcome_message', $data);
 	}
 }

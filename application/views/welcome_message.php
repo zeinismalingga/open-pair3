@@ -81,9 +81,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="container">
 	<?php echo 'Welcome '. $this->session->userdata('email') ?>
 	<br>
-
+	<br>
 	<?php if($this->session->userdata('role') == '1'): ?>
 	<a href="<?php echo base_url('index.php/product/create') ?>">Create Product</a>
+	<br>
+	<br>
+
+	<table>
+		<tr>
+			<td>All Active User :</td>
+			<td><?php echo $active_user['0']['total'] ?></td>
+		</tr>
+		<tr>
+			<td>Active User Attached Product:</td>
+			<td><?php echo $active_user_attached['0']['total'] ?></td>
+		</tr>
+		<tr>
+			<td>All Active Product :</td>
+			<td><?php echo $active_product['0']['total'] ?></td>
+		</tr>
+		<tr>
+			<td>Active Product Which don't Belong to Any User :</td>
+			<td><?php echo $active_product_dont_belong['0']['total'] ?></td>
+		</tr>
+		<tr>
+			<td>Amount of all active attached products :</td>
+			<td><?php echo $active_attached_products['0']['total'] ?></td>
+		</tr>
+		<tr>
+			<td>Summarized price of all active attached products :</td>
+			<td><?php echo $price_active_attached_products['0']['total'] ?></td>
+		</tr>
+		<tr style="vertical-align: top;">
+			<td>Summarized prices of all active products per user :</td>
+			<td>
+				<?php foreach($price_active_attached_products_peruser as $data): ?>
+				<span><?php echo $data['email'] ?> : <?php echo $data['total'] ?></span> <br>
+				<?php endforeach ?>
+			</td>
+		</tr>
+		<tr style="vertical-align: top;">
+			<td>Exchange rates :</td>
+			<td>
+				<span>USD : <?php echo $exchange['rates']['USD'] ?></span> <br>
+				<span>RON : <?php echo $exchange['rates']['RON'] ?></span> <br>
+			</td>
+		</tr>
+	</table>
 	<?php endif ?>
 
 	<?php if($this->session->userdata('role') == '0'): ?>
